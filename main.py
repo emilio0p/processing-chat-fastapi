@@ -1,11 +1,13 @@
+# Importaciones
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from controller.main_controller import router
 from controller.user_controller import user_router
-from connection.connect import engine, Base
 
+# Instancia FastAPI
 app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,6 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 app.include_router(router)
 app.include_router(user_router)
