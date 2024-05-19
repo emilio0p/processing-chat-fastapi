@@ -17,6 +17,7 @@ def insert_user(user: UserAddDTO, rol:int, db: Session):
         db.commit()
         db.refresh(db_user)
         return db_user
+    #TODO Cambiar el tema de control de excepciones
     except SQLAlchemyError as e:
            raise HTTPException(status_code=409, detail=str(e))  # Raise a more specific error
 
@@ -33,4 +34,9 @@ def update_user(db_user: User, user: UserAddDTO, db: Session):
    db.commit()
    db.refresh(db_user)
    return db_user
+
+# Función eliminar usuario
+def delete_user(db_user: User, db: Session):
+    db.delete(db_user)
+    db.commit()
 
