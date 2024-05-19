@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status
 
 from connection.connect import get_db
-from persistence.model.user import UserDTO, UserAddDTO
+from persistence.model.user_dto import UserDTO, UserAddDTO
 from service.user_service import search_all_users, save_user, replace_user, search_user_by_id
 
 # Instanciar router Users

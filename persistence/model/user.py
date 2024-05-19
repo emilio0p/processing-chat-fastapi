@@ -1,8 +1,8 @@
 # Importaciones
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from connection.connect import Base
-from pydantic import BaseModel
+from persistence.model.rol import Rol
 
 # Entidad modelada User
 class User(Base):
@@ -12,23 +12,7 @@ class User(Base):
     email = Column(String(40))
     password = Column(String(60))
     phone = Column(String(20))
-    rol = Column(String)
+    rol_id = Column(Integer, ForeignKey("roles.rol_id"))
 
-
-# Entidad DTO User Base
-class UserBaseDTO(BaseModel):
-    username: str
-    email: str
-    phone: str
-
-# Entidad DTO User Add
-class UserAddDTO(UserBaseDTO):
-    password: str
-    rol: str
-
-# Entidad DTO User
-class UserDTO(UserBaseDTO):
-    user_id: int
-    
-    class Config:
-        orm_mode = True
+    # Relaciones
+    user_rol = relationship("Rol", back_populates="rol_users")
