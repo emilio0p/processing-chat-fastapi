@@ -2,7 +2,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from connection.connect import Base
-from persistence.model.rol import Rol
 
 # Entidad modelada User
 class FormType(Base):
@@ -11,4 +10,4 @@ class FormType(Base):
     form_name = Column(String(150))
 
     # Relaciones
-    form_type_chat = relationship("ActiveChat", back_populates="chat_form_type")
+    form_type_chat = relationship("ActiveChat",back_populates="chat_form_type")

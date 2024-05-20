@@ -29,7 +29,7 @@ async def edit_user(user_id: int, user: UserAddDTO, db: Session = Depends(get_db
     return replace_user(user_id, user, db)
 
 # Petición GET "/api/v1/users/user_id"
-@user_router.get("/{user_id:int}", response_model=UserDTO, status_code=status.HTTP_302_FOUND)
+@user_router.get("/{user_id:int}", response_model=UserDTO)
 async def find_user_by_id(user_id:int, db: Session = Depends(get_db)):
     return search_user_by_id(user_id, db) 
 

@@ -1,5 +1,7 @@
 # Importaciones
 from pydantic import BaseModel
+from typing import Optional
+from persistence.model.rol_dto import RolDTO
 
 #Vamos a desarrollar el objeto de transferencia de datos
 
@@ -17,7 +19,7 @@ class UserAddDTO(UserBaseDTO):
 # Entidad DTO User
 class UserDTO(UserBaseDTO):
     user_id: int
-    rol_id: int
+    user_rol: Optional[RolDTO]
 
     class Config:
         orm_mode = True
