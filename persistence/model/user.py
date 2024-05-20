@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from connection.connect import Base
-from persistence.model.rol import Rol
+from persistence.model.active_chat import ActiveChat
 
 # Entidad modelada User
 class User(Base):
@@ -16,3 +16,5 @@ class User(Base):
 
     # Relaciones
     user_rol = relationship("Rol", back_populates="rol_users")
+    user_client_chat = relationship("ActiveChat",foreign_keys="ActiveChat.client_id", back_populates="chat_user_client")
+    user_admin_chat = relationship("ActiveChat",foreign_keys="ActiveChat.admin_id", back_populates="chat_user_admin")
