@@ -13,6 +13,7 @@ def save_user(user: UserAddDTO, db: Session):
     db_rol = select_rol_name("user", db)
     if not db_rol:
         raise HTTPException(status_code=404, detail="Rol no encontrado")
+    
     return insert_user(user,db_rol.rol_id,db)
 
 def search_user_by_id(user_id: int, db: Session):
@@ -33,4 +34,5 @@ def remove_user(user_id: int, db:Session):
     db_user = search_user_by_id(user_id, db)
     if not db_user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
     return delete_user(db_user, db)
