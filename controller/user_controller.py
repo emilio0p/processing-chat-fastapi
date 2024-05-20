@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status
 
 from connection.connect import get_db
-from persistence.model.user import UserDTO, UserAddDTO
-from service.user_service import search_all_users, save_user, replace_user, search_user_by_id
+from persistence.model.user_dto import UserDTO, UserAddDTO
+from service.user_service import search_all_users, save_user, replace_user, search_user_by_id, remove_user
 
 # Instanciar router Users
 user_router = APIRouter(
@@ -31,4 +31,9 @@ async def edit_user(user_id: int, user: UserAddDTO, db: Session = Depends(get_db
 # Petición GET "/api/v1/users/user_id"
 @user_router.get("/{user_id:int}", response_model=UserDTO, status_code=status.HTTP_302_FOUND)
 async def find_user_by_id(user_id:int, db: Session = Depends(get_db)):
-    return search_user_by_id(user_id, db)
+    return search_user_by_id(user_id, db) 
+
+# Petición DELETE "/api/v1/users/user_id"
+@user_router.delete("/{user_id:int}", status_code=status.HTTP_204_NO_CONTENT)
+async def erase_user(user_id: int, db:Session=Depends(get_db)):
+    remove_user(user_id, db)
