@@ -50,8 +50,6 @@ def create_access_token(user_db):
         "exp": datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_DURATION)
     }
 
-    print(access_token)
-
     return JSONResp(access_token=jwt.encode(access_token, SECRET, algorithm=ALGORITHM),
             token_type= "bearer")
 
