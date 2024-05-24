@@ -10,7 +10,7 @@ class User(Base):
     user_id = Column(Integer, primary_key=True, index=True)
     username = Column(String(100))
     email = Column(String(40))
-    password = Column(String(60))
+    password = Column(String(64))
     phone = Column(String(20))
     rol_id = Column(Integer, ForeignKey("roles.rol_id"))
 
