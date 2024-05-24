@@ -1,7 +1,7 @@
 # Importaciones
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError 
+from sqlalchemy.exc import SQLAlchemyError, IntegrityError 
 from persistence.model.user import User
 from persistence.model.user_dto import UserAddDTO
 
@@ -12,18 +12,18 @@ def select_all_users(db: Session):
 # Función insertar un usuario
 def insert_user(user: UserAddDTO, rol:int, db: Session):
     db_user = User(username=user.username, email=user.email, password=user.password, phone=user.phone, rol_id=rol)
-    try:
-        db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
-        return db_user
-    #TODO Cambiar el tema de control de excepciones
-    except SQLAlchemyError as e:
-           raise HTTPException(status_code=409, detail=str(e))  # Raise a more specific error
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 # Función seleccionar usuario por id
 def select_user_by_id(user_id: int, db: Session):
    return db.query(User).filter(User.user_id==user_id).first()
+
+# Función seleccionar usuario por email
+def select_user_by_email(user_email: str, db: Session):
+    return db.query(User).filter(User.email==user_email).first()
 
 # Función editar usuario
 def update_user(db_user: User, user: UserAddDTO, db: Session):
