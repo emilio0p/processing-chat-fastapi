@@ -1,5 +1,5 @@
 # Importaciones
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from connection.connect import Base
 from persistence.model.form_type import FormType
@@ -14,6 +14,7 @@ class ActiveChat(Base):
     admin_id = Column(Integer, ForeignKey("users.user_id"))
     form_id = Column(Integer, ForeignKey("form_type.form_id"))
     status_id = Column(Integer, ForeignKey("chat_status.status_id"))
+    delivery_date = Column(Date)
 
     # Relaciones
     chat_user_client = relationship("User",foreign_keys=[client_id], back_populates="user_client_chat")
