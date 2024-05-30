@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 
 from connection.connect import get_db
 from persistence.model.user_dto import UserDTO, UserAddDTO
-from service.user_service import search_all_users, save_user, replace_user, search_user_by_id, remove_user
+from service.user_service import search_all_users, replace_user, search_user_by_id, remove_user
 
 # Instanciar router Users
 user_router = APIRouter(
@@ -17,11 +17,6 @@ user_router = APIRouter(
 @user_router.get("/", response_model=list[UserDTO])
 async def show_all_users(db: Session = Depends(get_db)):
     return search_all_users(db)
-
-# Petición POST "/api/v1/users"
-@user_router.post("/", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
-async def add_user(user: UserAddDTO, db: Session = Depends(get_db)):
-    return save_user(user, db)
 
 # Petición PUT "/api/v1/users/user_id"
 @user_router.put("/{user_id:int}", response_model=UserDTO, status_code=status.HTTP_202_ACCEPTED)

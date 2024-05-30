@@ -15,7 +15,7 @@ def select_all_chats(db:Session):
 def select_chat_by_id(chat_id: int, db: Session):
  return db.query(ActiveChat).filter(ActiveChat.chat_id==chat_id).first()
 
-# dasdasdsad
+# TODO Terminar de controlar los errores y revisar todos
 def insert_chat(chat: ActiveChatAddDTO, status: int, db: Session):
    
    form_selected = select_form_by_id(chat.form_id, db)
@@ -33,7 +33,8 @@ def insert_chat(chat: ActiveChatAddDTO, status: int, db: Session):
                         client_id=chat.client_id, 
                         admin_id=chat.admin_id, 
                         form_id=chat.form_id, 
-                        status_id = status)
+                        status_id = status,
+                        delivery_date = chat.delivery_date)
    
    try:
         db.add(db_chat)
@@ -42,3 +43,16 @@ def insert_chat(chat: ActiveChatAddDTO, status: int, db: Session):
         return db_chat
    except SQLAlchemyError as e:
            raise HTTPException(status_code=409, detail=str(e))
+   
+
+def delete_chat(chat: ActiveChat, db: Session):
+    db.delete(chat)
+    db.commit()
+
+def select_chat_by_client(client_id: int, db: Session):
+    return db.query(ActiveChat).filter(ActiveChat.client_id==client_id)
+
+def select_chat_by_admin(admin_id: int, db: Session):
+    return db.query(ActiveChat).filter(ActiveChat.admin_id==admin_id)
+
+

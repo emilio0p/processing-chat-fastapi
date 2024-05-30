@@ -35,6 +35,9 @@ def register_user(user: UserAddDTO, db: Session):
 def check_login(form: OAuth2PasswordRequestForm, db: Session):
     user_db = select_user_by_email(form.username, db)
     
+    if not user_db :
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Credenciales incorrectas")
+
     if not crypt.verify(form.password, user_db.password):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, 
                             detail="La contraseña no es correcta")
