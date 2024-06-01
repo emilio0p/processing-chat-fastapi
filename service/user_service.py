@@ -5,6 +5,7 @@ from persistence.repository.user_repository import select_all_users, insert_user
 from persistence.model.user_dto import UserAddDTO
 from persistence.repository.rol_repository import select_rol_name
 
+# TODO Hacer la verificacion de los token para los endpoint privados
 # Llamadas a las funciones del repositorio
 def search_all_users(db: Session):
     return select_all_users(db)
