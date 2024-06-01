@@ -1,6 +1,7 @@
 # Importaciones
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, status
+from fastapi.security import OAuth2PasswordBearer
 
 from connection.connect import get_db
 from persistence.model.user_dto import UserDTO, UserAddDTO
@@ -13,22 +14,24 @@ user_router = APIRouter(
     responses={404: {"message": "No encontrado"}}
 )
 
+oauth2 = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+
 # Petición GET "/api/v1/users"
 @user_router.get("/", response_model=list[UserDTO])
-async def show_all_users(db: Session = Depends(get_db)):
-    return search_all_users(db)
+async def show_all_users(db: Session = Depends(get_db), token: str = Depends(oauth2)):
+    return search_all_users(db, token)
 
 # Petición PUT "/api/v1/users/user_id"
 @user_router.put("/{user_id:int}", response_model=UserDTO, status_code=status.HTTP_202_ACCEPTED)
-async def edit_user(user_id: int, user: UserAddDTO, db: Session = Depends(get_db)):
-    return replace_user(user_id, user, db)
+async def edit_user(user_id: int, user: UserAddDTO, db: Session = Depends(get_db), token: str = Depends(oauth2)):
+    return replace_user(user_id, user, db, token)
 
 # Petición GET "/api/v1/users/user_id"
 @user_router.get("/{user_id:int}", response_model=UserDTO)
-async def find_user_by_id(user_id:int, db: Session = Depends(get_db)):
-    return search_user_by_id(user_id, db) 
+async def find_user_by_id(user_id:int, db: Session = Depends(get_db), token: str = Depends(oauth2)):
+    return search_user_by_id(user_id, db, token) 
 
 # Petición DELETE "/api/v1/users/user_id"
 @user_router.delete("/{user_id:int}", status_code=status.HTTP_204_NO_CONTENT)
-async def erase_user(user_id: int, db:Session=Depends(get_db)):
-    remove_user(user_id, db)
+async def erase_user(user_id: int, db:Session=Depends(get_db), token: str = Depends(oauth2)):
+    remove_user(user_id, db, token)
