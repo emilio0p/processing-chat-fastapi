@@ -31,7 +31,7 @@ def save_chat(chat: ActiveChatAddDTO, db: Session, token: str):
     if not user_db:
         raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
     
-    db_status = select_status_by_name("Pruebas - Creado", db)
+    db_status = select_status_by_name("Creado", db)
     if not db_status:
         raise HTTPException(status_code=400, detail="ERROR: El estado a asignar no es correcto")
     

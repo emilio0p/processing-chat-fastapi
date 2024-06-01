@@ -21,3 +21,4 @@ class ActiveChat(Base):
     chat_user_admin = relationship("User",foreign_keys=[admin_id], back_populates="user_admin_chat")
     chat_form_type = relationship("FormType", back_populates="form_type_chat")
     chat_chat_status = relationship("ChatStatus", back_populates="chat_status_chat")
+    chat_message = relationship("Message", back_populates="message_chat")
