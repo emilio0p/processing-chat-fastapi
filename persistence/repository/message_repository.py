@@ -23,4 +23,8 @@ def insert_message(message: MessageAddDTO, db: Session):
         return db_message
    
    except SQLAlchemyError as e:
-           raise HTTPException(status_code=409, detail=str(e))
+           raise HTTPException(status_code=409, detail="Error al insertar el mensaje en la base de datos")
+     
+
+def select_messages_by_chat(chat_id: int, db: Session):
+     return db.query(Message).filter(Message.chat_id == chat_id).all()
