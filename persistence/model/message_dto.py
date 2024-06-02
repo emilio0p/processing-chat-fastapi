@@ -13,12 +13,14 @@ class MessageAddDTO(BaseModel):
     user_id: int
     content: str
 
+class MessageBaseDTO(BaseModel):
+    chat_id: int
+    user_id: int
+    content: str
 
 # Entidad DTO User
-class MessageDTO(MessageAddDTO):
+class MessageDTO(MessageBaseDTO):
     message_id: int
-    message_chat: Optional[ActiveChatDTO]
-    message_user: Optional[UserDTO]
 
     class Config:
         orm_mode = True
