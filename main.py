@@ -1,7 +1,6 @@
-from typing import Any
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
+
 
 from controller.user_controller import user_router
 from controller.chat_controller import chat_router
