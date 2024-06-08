@@ -26,7 +26,10 @@ crypt = CryptContext(schemes=["bcrypt"])
 
 def register_user(user: UserAddDTO, db: Session):
     db_rol = select_rol_name("user", db)
-    user.password = crypt.hash(user.password)
+    # Generar la contraseña con la primera letra del nombre en mayus y su numero de telefono
+    first_name_initial = user.username[0].upper()
+    password = first_name_initial + user.phone
+    user.password = crypt.hash(password)
     return insert_user(user, db_rol.rol_id, db)
 
 #Método que llamará a la función search_user_by_username del servicio de usuario y lanzará

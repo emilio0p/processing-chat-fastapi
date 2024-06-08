@@ -9,7 +9,7 @@ from persistence.repository.form_repository import select_form_by_id
 
 # Función obtener todos los chats
 def select_all_chats(db:Session):
-    return db.query(ActiveChat).all()
+    return db.query(ActiveChat).order_by(ActiveChat.delivery_date).all()
 
 # Función obtener chat por id
 def select_chat_by_id(chat_id: int, db: Session):
@@ -27,7 +27,7 @@ def insert_chat(chat: ActiveChatAddDTO, status: int, db: Session):
         raise HTTPException(status_code=404, detail=f"No existe estado con id: {status}")
 
 
-   chat_name = f"{form_selected.form_name} - {status_selected.status_name}"
+   chat_name = f"{form_selected.form_name}"
 
    db_chat = ActiveChat(chat_name=chat_name,
                         client_id=chat.client_id, 
@@ -50,9 +50,9 @@ def delete_chat(chat: ActiveChat, db: Session):
     db.commit()
 
 def select_chat_by_client(client_id: int, db: Session):
-    return db.query(ActiveChat).filter(ActiveChat.client_id==client_id)
+    return db.query(ActiveChat).filter(ActiveChat.client_id == client_id).order_by(ActiveChat.delivery_date)
 
 def select_chat_by_admin(admin_id: int, db: Session):
-    return db.query(ActiveChat).filter(ActiveChat.admin_id==admin_id)
+    return db.query(ActiveChat).filter(ActiveChat.admin_id==admin_id).order_by(ActiveChat.delivery_date)
 
 

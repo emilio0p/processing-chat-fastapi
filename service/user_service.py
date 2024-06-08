@@ -1,7 +1,7 @@
 # Importaciones
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from persistence.repository.user_repository import select_all_users, select_user_by_id, update_user, delete_user
+from persistence.repository.user_repository import select_all_users, select_user_by_id, update_user, delete_user, select_user_by_email
 from persistence.model.user_dto import UserAddDTO
 from service.auth_service import current_user
 
@@ -24,12 +24,23 @@ def search_user_by_id(user_id: int, db: Session, token: str):
     
     return db_user 
 
+def search_user_by_email(email: str, db: Session, token: str):
+    user_db = current_user(db, token)
+    if not user_db:
+        raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
+    
+    db_user = select_user_by_email(email, db)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    
+    return db_user 
+
 def replace_user(user_id: int, user: UserAddDTO, db: Session, token: str):
     user_db = current_user(db, token)
     if not user_db:
         raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
     
-    db_user = search_user_by_id(user_id, db)
+    db_user = search_user_by_id(user_id, db, token)
     if not db_user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
 
@@ -41,7 +52,7 @@ def remove_user(user_id: int, db:Session, token: str):
     if not user_db:
         raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
     
-    db_user = search_user_by_id(user_id, db)
+    db_user = search_user_by_id(user_id, db, token)
     if not db_user:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     
