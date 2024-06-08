@@ -21,6 +21,7 @@ class MessageBaseDTO(BaseModel):
 # Entidad DTO User
 class MessageDTO(MessageBaseDTO):
     message_id: int
+    timestamp: datetime
 
     class Config:
         orm_mode = True
