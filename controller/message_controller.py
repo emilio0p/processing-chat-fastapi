@@ -1,6 +1,6 @@
 # Importaciones
 from sqlalchemy.orm import Session
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 
 from connection.connect import get_db
@@ -33,7 +33,10 @@ async def show_messages_by_chat(chat_id:int, db: Session=Depends(get_db), token:
 # se ejecutará la función me, que mostrará los datos del usuario logueado.
 @message_router.get("/lm/{chat_id:int}", response_model=MessageDTO)
 async def show_last_message(chat_id:int, db: Session=Depends(get_db), token: str = Depends(oauth2)):
-    return search_last_message_by_chat(chat_id, db, token)
+    last_message = search_last_message_by_chat(chat_id, db, token)
+    if not last_message :  # Check for None
+        raise HTTPException(status_code=404, detail="msg not found")  # Return None gracefully
+    return last_message  # Return message object as before
 
 # Petición POST
 @message_router.post("/", status_code=201)

@@ -6,6 +6,7 @@ from persistence.model.active_chat import ActiveChat
 from persistence.model.active_chat_dto import ActiveChatAddDTO
 from persistence.repository.status_repository import select_status_by_id
 from persistence.repository.form_repository import select_form_by_id
+from persistence.repository.user_repository import select_user_by_rol
 
 # Función obtener todos los chats
 def select_all_chats(db:Session):
@@ -25,13 +26,16 @@ def insert_chat(chat: ActiveChatAddDTO, status: int, db: Session):
    status_selected = select_status_by_id(status, db)
    if not status_selected:
         raise HTTPException(status_code=404, detail=f"No existe estado con id: {status}")
-
+   
+   admin_selected = select_user_by_rol("admin", db)
+   if not admin_selected:
+        raise HTTPException(status_code=404, detail=f"No usuario con este rol")
 
    chat_name = f"{form_selected.form_name}"
 
    db_chat = ActiveChat(chat_name=chat_name,
                         client_id=chat.client_id, 
-                        admin_id=chat.admin_id, 
+                        admin_id=admin_selected.user_id, 
                         form_id=chat.form_id, 
                         status_id = status,
                         delivery_date = chat.delivery_date)

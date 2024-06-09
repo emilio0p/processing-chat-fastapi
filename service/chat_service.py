@@ -6,6 +6,7 @@ from persistence.repository.chat_repository import select_all_chats, select_chat
 from persistence.repository.status_repository import select_status_by_name
 from persistence.model.active_chat_dto import ActiveChatAddDTO
 from service.auth_service import current_user
+from persistence.repository.form_repository import select_all_forms
 
 # Llamadas a las funciones del repositorio
 def search_all_chats(db: Session, token: str):
@@ -67,3 +68,10 @@ def search_chat_by_admin(admin_id: int, db: Session, token: str):
         raise HTTPException(status_code=404, detail="Chat no encontrado")
     
     return db_chat 
+
+def search_form_types(db: Session, token: str):
+    user_db = current_user(db, token)
+    if not user_db:
+        raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
+    
+    return select_all_forms(db)

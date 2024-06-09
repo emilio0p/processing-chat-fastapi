@@ -69,6 +69,7 @@ async def send_welcome_email(user: UserAddDTO, verification_link: str):
 # En el endpoint /register (En el caso local, http://localhost:8000/api/v1/auth/register)
 # se ejecutará la función register si la petición es de tipo post.
 # Registraremos un usuario en la bbdd.
+# TODO Hacer que verifique el token
 @auth_router.post("/register", response_model=UserDTO, status_code=status.HTTP_201_CREATED)
 async def register(user: UserAddDTO, db: Session=Depends(get_db)):
     try:

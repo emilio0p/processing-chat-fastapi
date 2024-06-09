@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError 
 from persistence.model.user import User
 from persistence.model.user_dto import UserAddDTO
+from persistence.repository.rol_repository import select_rol_name
 
 # Función seleccionar todos los usuarios
 def select_all_users(db: Session):
@@ -20,6 +21,11 @@ def insert_user(user: UserAddDTO, rol:int, db: Session):
 # Función seleccionar usuario por id
 def select_user_by_id(user_id: int, db: Session):
    return db.query(User).filter(User.user_id==user_id).first()
+
+# Función seleccionar usuario por id
+def select_user_by_rol(rol_name:str, db: Session):
+   db_rol = select_rol_name(rol_name, db)
+   return db.query(User).filter(User.rol_id==db_rol.rol_id).first()
 
 # Función seleccionar usuario por email
 def select_user_by_email(user_email: str, db: Session):
