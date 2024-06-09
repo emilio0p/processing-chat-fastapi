@@ -14,6 +14,9 @@ class ActiveChatAddDTO(BaseModel):
     form_id: int
     delivery_date: date
 
+class ActiveChatStatusDTO(BaseModel):
+    status_id: int
+
 
 #Desarrollamos la clase DTO y la configuramos para poder mostrarla en lectura
 class ActiveChatDTO(ActiveChatAddDTO):

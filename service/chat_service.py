@@ -2,9 +2,9 @@
 from sqlalchemy.orm import Session
 from fastapi import HTTPException
 
-from persistence.repository.chat_repository import select_all_chats, select_chat_by_id, insert_chat, delete_chat, select_chat_by_client, select_chat_by_admin
+from persistence.repository.chat_repository import select_all_chats, select_chat_by_id, insert_chat, delete_chat, select_chat_by_client, select_chat_by_admin, update_chat
 from persistence.repository.status_repository import select_status_by_name
-from persistence.model.active_chat_dto import ActiveChatAddDTO
+from persistence.model.active_chat_dto import ActiveChatAddDTO, ActiveChatStatusDTO
 from service.auth_service import current_user
 from persistence.repository.form_repository import select_all_forms
 
@@ -75,3 +75,14 @@ def search_form_types(db: Session, token: str):
         raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
     
     return select_all_forms(db)
+
+def replace_chat(chat_id: int,chat:ActiveChatStatusDTO, db: Session, token: str):
+    user_db = current_user(db, token)
+    if not user_db:
+        raise HTTPException(status_code=400, detail="ERROR: El token no es válido")
+    
+    db_chat = search_chat_by_id(chat_id, db, token)
+    if not db_chat:
+        raise HTTPException(status_code=404, detail="Chat no encontrado")
+
+    return update_chat(db_chat, chat, db)
