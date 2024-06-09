@@ -11,7 +11,6 @@ from datetime import date
 
 class ActiveChatAddDTO(BaseModel):
     client_id: int
-    admin_id: int
     form_id: int
     delivery_date: date
 

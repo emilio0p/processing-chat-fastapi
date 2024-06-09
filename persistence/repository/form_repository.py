@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from persistence.model.form_type import FormType
 
 # Función obtener rol_id
+def select_all_forms(db:Session):
+    return db.query(FormType).all()
+
 def select_form_by_name(name:str, db:Session):
     return db.query(FormType).filter(FormType.form_name == name).first()
 

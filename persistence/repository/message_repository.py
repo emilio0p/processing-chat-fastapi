@@ -31,7 +31,5 @@ def select_messages_by_chat(chat_id: int, db: Session):
 
 # Función obtener último mensaje por chat
 def select_last_message_by_chat(chat_id: int, db: Session):
-        last_message = db.query(Message).filter(Message.chat_id == chat_id).order_by(Message.timestamp.desc()).first()
-        if not last_message:
-             pass
-        return last_message
+     last_message = db.query(Message).filter(Message.chat_id == chat_id).order_by(Message.timestamp.desc()).first()
+     return last_message  # Remove the `if not last_message` check

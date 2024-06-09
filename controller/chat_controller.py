@@ -6,7 +6,8 @@ from fastapi.security import OAuth2PasswordBearer
 
 from connection.connect import get_db
 from persistence.model.active_chat_dto import ActiveChatDTO, ActiveChatAddDTO
-from service.chat_service import search_all_chats, search_chat_by_id, save_chat, remove_chat, search_chat_by_client, search_chat_by_admin
+from persistence.model.form_type_dto import FormTypeDTO
+from service.chat_service import search_all_chats, search_chat_by_id, save_chat, remove_chat, search_chat_by_client, search_chat_by_admin, search_form_types
 
 # Instanciar router Chats
 chat_router = APIRouter(
@@ -42,6 +43,11 @@ async def erase_chat(chat_id:int, db: Session = Depends(get_db), token: str = De
 @chat_router.get("/client={client_id:int}", response_model=list[ActiveChatDTO])
 async def find_chat_by_client(client_id:int, db: Session = Depends(get_db), token: str = Depends(oauth2)):
     return search_chat_by_client(client_id, db, token)
+
+# Petición GET "/api/v1/chats/client_id"
+@chat_router.get("/form-types", response_model=list[FormTypeDTO])
+async def find_form_types(db: Session = Depends(get_db), token: str = Depends(oauth2)):
+    return search_form_types(db, token)
 
 # Petición GET "/api/v1/chats/admin_id"
 @chat_router.get("/admin={admin_id:int}", response_model=list[ActiveChatDTO])
