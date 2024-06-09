@@ -35,7 +35,7 @@ async def show_messages_by_chat(chat_id:int, db: Session=Depends(get_db), token:
 async def show_last_message(chat_id:int, db: Session=Depends(get_db), token: str = Depends(oauth2)):
     last_message = search_last_message_by_chat(chat_id, db, token)
     if not last_message :  # Check for None
-        raise HTTPException(status_code=404, detail="msg not found")  # Return None gracefully
+        raise HTTPException(status_code=404)  # Return None gracefully
     return last_message  # Return message object as before
 
 # Petición POST

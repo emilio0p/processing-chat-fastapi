@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from fastapi import HTTPException
 from sqlalchemy.exc import SQLAlchemyError 
 from persistence.model.active_chat import ActiveChat
-from persistence.model.active_chat_dto import ActiveChatAddDTO
+from persistence.model.active_chat_dto import ActiveChatAddDTO, ActiveChatStatusDTO
 from persistence.repository.status_repository import select_status_by_id
 from persistence.repository.form_repository import select_form_by_id
 from persistence.repository.user_repository import select_user_by_rol
@@ -58,5 +58,11 @@ def select_chat_by_client(client_id: int, db: Session):
 
 def select_chat_by_admin(admin_id: int, db: Session):
     return db.query(ActiveChat).filter(ActiveChat.admin_id==admin_id).order_by(ActiveChat.delivery_date)
+
+def update_chat(db_chat: ActiveChat, chat: ActiveChatStatusDTO, db: Session):
+    db_chat.status_id = chat.status_id
+    db.commit()
+    db.refresh(db_chat)
+    return db_chat
 
 
